@@ -8,18 +8,18 @@ include Makefile.SRCS
 ###################################################
 
 # prefered netCDF 4.2.1.1 or later
-LIBS = -lnetcdff -lnetcdf
-INCL = -I/global/apps/netcdf/4.1.3/include
-LLIB = -L/global/apps/netcdf/4.1.3/lib
+LIBS = -lnetcdff -lnetcdf -lmpi_usempi -lmpi_mpifh -lmpi
+INCL = -I${NETCDFINCLUDE} -I${MPI_INCLUDE} -I${MPI_LIB}
+LLIB = -L${NETCDFLIB} -L${MPI_LIB}
 
 # options by nc-config/nf-config utility
-INCL = $(shell nf-config --fflags)
-LLIB = $(shell nf-config --flibs)
+#INCL = $(shell nc-config --fflags)
+#LLIB = $(shell nc-config --flibs)
 
-F90 = mpif90
+F90 = gfortran
 
 # GNU gfortran compiler (version 4.4.3 or later)
-F90FLAGS = -ffree-line-length-none -fdefault-real-8 -O3
+F90FLAGS = -ffree-line-length-none -fdefault-real-8 -O3 -fno-range-check
 
 # Intel ifort compiler
 #F90FLAGS = -shared-intel -r8 -recursive -O3
