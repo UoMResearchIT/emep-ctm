@@ -903,6 +903,7 @@ subroutine Config_Constants(iolog)
   logical,save :: first_call = .true.
   character(len=len(meteo)) ::  MetDir='./' ! path from meteo
   character(len=*), parameter ::  dtxt='Config_MC:'
+  logical :: dir_exists
 
   NAMELIST /Model_config/ &
     DegreeDayFactorsFile, meteo & !meteo template with full path
@@ -1061,12 +1062,11 @@ subroutine Config_Constants(iolog)
       end if
       exit
     end if
-!   INQUIRE(...) does not behave consistently across intel/gfortran
-    open(IO_TMP,file=trim(DataPath(i)),iostat=iostat,action='read')! does not work without action='read'
-    if(iostat==0)then
+!   gfortran specific solution - need some compiler specific preprocessing 
+    inquire(file=trim(DataPath(i)), exist=dir_exists)
+    if(dir_exists)then
       DataDir=trim(DataPath(i))
       if(MasterProc)write(*,*)dtxt//'DataDir set to',trim(DataDir)
-      close(IO_TMP)
       exit
     end if
   end do
