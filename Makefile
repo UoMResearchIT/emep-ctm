@@ -8,16 +8,15 @@ PROG =	emepctm
 ###################################################
 
 # prefered netCDF 4.2.1.1 or later
-LIBS = -lnetcdf -lnetcdff
-#explicit pathes needed only if nf-config does not work
-INCL = -I/my/path/to/include
-LLIB = -L/my/path/to/lib
+LIBS = -lnetcdff -lnetcdf -lmpi_usempi -lmpi_mpifh -lmpi
+INCL = -I${NETCDFINCLUDE} -I${MPI_INCLUDE} -I${MPI_LIB}
+LLIB = -L${NETCDFLIB} -L${MPI_LIB}
 
-# options using nf-config utility (older versions used nc-config)
-INCL = -I$(shell nf-config --includedir)
-LLIB = -L$(shell nf-config --flibs)
+# options by nc-config/nf-config utility
+#INCL = $(shell nc-config --fflags)
+#LLIB = $(shell nc-config --flibs)
 
-F90 = mpif90
+F90 = gfortran
 
 # GNU gfortran compiler (tested for version 8.5.0)
 F90FLAGS = -fdefault-real-8  -ffixed-line-length-none -ffree-line-length-none -Wno-error=line-truncation -O3 -g
@@ -25,9 +24,11 @@ F90FLAGS = -fdefault-real-8  -ffixed-line-length-none -ffree-line-length-none -W
 F90FLAGS = -fdefault-real-8 -fallow-argument-mismatch  -ffixed-line-length-none -ffree-line-length-none -Wno-error=line-truncation -O3 -g
 #DEBUG flag
 #F90FLAGS += -Wall -fbacktrace -fbounds-check -fimplicit-none -pedantic
+# GNU gfortran compiler (version 4.4.3 or later)
+#F90FLAGS = -ffree-line-length-none -fdefault-real-8 -O3 -fno-range-check
 
 # Intel ifort compiler (comment out if gfortran used)
-F90FLAGS = -g -r8 -IPF_fp_relaxed -assume noold_maxminloc -O2 -march=core-avx2
+#F90FLAGS = -g -r8 -IPF_fp_relaxed -assume noold_maxminloc -O2 -march=core-avx2
 
 ###################################################
 
