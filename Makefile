@@ -8,7 +8,8 @@ PROG =	emepctm
 ###################################################
 
 # prefered netCDF 4.2.1.1 or later
-LIBS = -lnetcdff -lnetcdf -lmpi_usempi -lmpi_mpifh -lmpi
+#LIBS = -lnetcdff -lnetcdf -lmpi_usempi -lmpi_mpifh -lmpi
+LIBS = -lnetcdff -lnetcdf
 INCL = -I${NETCDFINCLUDE} -I${MPI_INCLUDE} -I${MPI_LIB}
 LLIB = -L${NETCDFLIB} -L${MPI_LIB}
 
@@ -16,7 +17,8 @@ LLIB = -L${NETCDFLIB} -L${MPI_LIB}
 #INCL = $(shell nc-config --fflags)
 #LLIB = $(shell nc-config --flibs)
 
-F90 = gfortran
+#F90 = gfortran
+F90 = mpifort
 
 # GNU gfortran compiler (tested for version 8.5.0)
 F90FLAGS = -fdefault-real-8  -ffixed-line-length-none -ffree-line-length-none -Wno-error=line-truncation -O3 -g
