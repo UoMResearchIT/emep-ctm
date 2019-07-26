@@ -1,6 +1,6 @@
 #
 #
-PROG =	Unimod
+PROG =	emepctm
 ###################################################
 
 include Makefile.SRCS
@@ -21,10 +21,10 @@ LLIB = -L${NETCDFLIB} -L${MPI_LIB}
 F90 = mpifort
 
 # GNU gfortran compiler (version 4.4.3 or later)
-F90FLAGS = -ffree-line-length-none -fdefault-real-8 -O3
+F90FLAGS = -ffree-line-length-none -fdefault-real-8 -fdefault-double-8 -O2
 
-# Intel ifort compiler
-#F90FLAGS = -shared-intel -r8 -recursive -O3
+# Intel ifort compiler (comment out if gfortran used)
+F90FLAGS = -shared-intel -r8 -recursive -O2
 
 ###################################################
 
