@@ -1420,7 +1420,7 @@ end if
 
               if (debugm) write(*,*) "SPLITINFO iem ", i,idef, intext(idef,i)
 
-              itot = find_index(intext(idef,i), species(:)%name )
+              itot = find_index(intext(idef,i), species(:)%name, any_case=.true. )
 
               if ( defaults ) then
                 if ( Headers(i+2) /= "UNREAC" ) then 
