@@ -257,7 +257,7 @@ subroutine GridRead(meteo,cyclicgrid)
     call GetFullDomainSize(filename,IIFULLDOM,JJFULLDOM,KMAX_MET,projection)
 
     KMAX_MID=0!initialize
-    open(IO_TMP,file=Vertical_levelsFile,action="read",iostat=ios)
+    open(IO_TMP,file=Vertical_levelsFile,action="read",status="old",iostat=ios)
     if(ios==0)then
       ! define own vertical coordinates
       if(MasterProc)&
