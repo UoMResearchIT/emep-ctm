@@ -103,6 +103,7 @@ integer      :: ncFileID_new=closedID  !don't save because should always be
                 !redefined (in case several routines are using ncFileID_new
                 !with different filename_given)
 integer,save :: ncFileID_iou(IOU_INST:IOU_HOUR_INST)=closedID
+integer,save :: LF_ncFileID_iou(IOU_INST:IOU_HOUR_INST)=closedID
 integer,save :: outCDFtag=0
 !CDF types for output:
 integer, public, parameter  :: Int1=1,Int2=2,Int4=3,Real4=4,Real8=5
@@ -1861,6 +1862,11 @@ subroutine CloseNetCDF
       if(ncFileID/=closedID)then
         call check(nf90_close(ncFileID))
         ncFileID_iou(i)=closedID
+      end if
+      ncFileID=LF_ncFileID_iou(i)
+      if(ncFileID/=closedID)then
+        call check(nf90_close(ncFileID))
+        LF_ncFileID_iou(i)=closedID
       end if
     end do
   end if
