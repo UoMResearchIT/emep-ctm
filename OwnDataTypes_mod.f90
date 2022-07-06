@@ -299,6 +299,7 @@ type, public :: EmisFile_id_type
    integer :: sector = -1 !default sector 
    character(len=TXTLEN_NAME) :: mask_ID = 'NOTSET' ! set to ID of mask, if to be applied. Will then be default for all sources in file .NB: not read from attributes
    character(len=TXTLEN_NAME) :: mask_ID_reverse = 'NOTSET' ! set to ID of mask, if to be applied as reversed. Will then be default for all sources in file .NB: not read from attributes
+   integer :: ncFileID = -1 !internal: shows the netcdf file ID if the file is open, or must be < 0.
 end type EmisFile_id_type
 
 !/ Emissions file treatment. Dims more than used.
