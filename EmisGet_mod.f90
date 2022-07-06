@@ -145,17 +145,35 @@ contains
     type(EmisFile_id_type),intent(inout) ::  EmisFile
     real, intent(out), dimension(*) :: Emis_XD
     type(date), intent(in) :: date_wanted
+    integer :: ncFileID
     real :: date_wanted_in_days, TimesInDays(1)
     integer :: record
     logical, save :: dbg= .false., first_call = .true. 
     character(len=*), parameter :: dtxt = 'Emis_GetCdf:'
+    integer, save :: readcounter = 0
 
     if ( first_call ) then
       dbg =  ( MasterProc .and. DEBUG%GETEMIS )
       first_call = .false.
     end if
-
-    fname = date2string(EmisFile%filename,date_wanted,mode='YMDH')
+    fname = date2string(EmisFile%filename,date_wanted,mode='YMDH')    
+    if (EmisFile%ncFileID < 0 .and. trim(EmisFile%projection) /= 'native') then
+       !open file (much faster if it is done once only, and not for each variable)
+       !fast native not implemented yet
+       call check(nf90_open(path = fname, mode = nf90_nowrite, ncid = ncFileID))
+       EmisFile%ncFileID = ncFileID
+       readcounter = 0
+    end if
+    if (EmisFile%ncFileID >= 0 .and. readcounter>200) then
+       !we close and reopen the file, because otherwise the code may use
+       !lots of memory with some compilers
+       call check(nf90_close(EmisFile%ncFileID))
+        call check(nf90_open(path = fname, mode = nf90_nowrite, ncid = ncFileID))
+       EmisFile%ncFileID = ncFileID
+       readcounter = 0      
+    end if
+    readcounter = readcounter + 1
+    ncFileID = EmisFile%ncFileID
 
     if(EmisFile%periodicity == 'yearly' .or. EmisFile%periodicity == 'once')then
        !assumes only one record to read
@@ -221,7 +239,7 @@ contains
                interpol='mass_conservative',&
                Grid_resolution_in = EmisFile%grid_resolution,&
                needed=.true.,UnDef=0.0,&
-               debug_flag=.false.)          
+               debug_flag=.false., ncFileID_given=ncFileID)
        else
           call StopAll("EmisGet: Unit for emissions not recognized: "//trim(Emis_source%units)//' '//trim(Emis_source%varname))
        endif
