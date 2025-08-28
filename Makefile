@@ -24,7 +24,7 @@ F90 = mpifort
 F90FLAGS = -ffree-line-length-none -fdefault-real-8 -fdefault-double-8 -O2
 
 # Intel ifort compiler (comment out if gfortran used)
-F90FLAGS = -shared-intel -r8 -recursive -O2
+#F90FLAGS = -shared-intel -r8 -recursive -O2
 
 ###################################################
 
