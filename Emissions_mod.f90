@@ -1805,7 +1805,7 @@ subroutine EmisSet(indate)   !  emission re-set every time-step/hour
           !the species is defined as a sector emission
           iem=find_index(Emis_source(n)%species,EMIS_FILE(:))
           call CheckStop(iem<0, "did not recognize species "//trim(Emis_source(n)%species))
-          call CheckStop(Emis_source(n)%sector<=0," sector must be defined for "//trim(Emis_source(n)%varname))
+          call CheckStop(Emis_source(n)%sector<=0," sector must be defined for "//trim(Emis_source(n)%varname)//" for species "//trim(Emis_source(n)%species))
           do f = 1,emis_nsplit(iem)
              itot = iemsplit2itot(f,iem)
              call CheckStop(itot<0, "did not recognize split "//trim(Emis_source(n)%species))
